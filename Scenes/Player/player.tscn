@@ -1,0 +1,59 @@
+[gd_scene load_steps=7 format=3 uid="uid://devme4qgniwlk"]
+
+[ext_resource type="Script" uid="uid://dj4pmwmeqog63" path="res://Scripts/Player/player.gd" id="1_a3d8c"]
+[ext_resource type="Texture2D" uid="uid://dymjnq4w2rryi" path="res://Sprites/Player/Player_Dash.png" id="2_mtuoh"]
+[ext_resource type="Texture2D" uid="uid://dhylq75i442x5" path="res://Sprites/Player/Player_ball.png" id="2_xpcdj"]
+[ext_resource type="Texture2D" uid="uid://dxiw08aga78lj" path="res://Sprites/Player/Player_Normal.png" id="3_mtuoh"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_htcer"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_mtuoh")
+}],
+"loop": true,
+"name": &"Dash",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_xpcdj")
+}],
+"loop": true,
+"name": &"ball",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_mtuoh")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uvnfx"]
+size = Vector2(120, 125)
+
+[node name="player" type="CharacterBody2D" groups=["Player"]]
+scale = Vector2(0.25, 0.5)
+script = ExtResource("1_a3d8c")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(8, -4)
+scale = Vector2(15, 8)
+sprite_frames = SubResource("SpriteFrames_htcer")
+animation = &"Dash"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_uvnfx")
+
+[node name="CoyoteTimer" type="Timer" parent="."]
+wait_time = 0.12
+one_shot = true
+
+[node name="Dash_Timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[connection signal="timeout" from="Dash_Timer" to="." method="_on_dash_timer_timeout"]
